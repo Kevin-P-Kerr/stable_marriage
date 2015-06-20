@@ -5,9 +5,6 @@ def doStableMarriage(proposers,proposees):
       proposer.propose()
     for proposee in proposees:
       proposee.rejectCandidates()
-    print '****'
-    printMarriage(proposees)
-    print '****'
   printMarriage(proposees)
 
 class Proposer:
@@ -78,7 +75,7 @@ def onString(proposer, proposees):
 def numProposed(proposees):
   numProposed = 0
   for p in proposees:
-    if (p.tenativelyAccepted):
+    if (p.has_been_proposed_to):
       numProposed+=1
   return numProposed
 
