@@ -1,10 +1,13 @@
 # definitions
 def doStableMarriage(proposers,proposees):
+  iterations = 0
   while(unstable(proposers,proposees)):
+    iterations+=1
     for proposer in proposers:
       proposer.propose()
     for proposee in proposees:
       proposee.rejectCandidates()
+    print iterations
   printMarriage(proposees)
 
 class Proposer:
@@ -87,6 +90,7 @@ proposers = [Proposer([],'A'),Proposer([],'B'),Proposer([],'C')]
 
 proposeeA = Proposee([proposers[2],proposers[1],proposers[0]],'a')
 proposeeB = Proposee([proposers[0],proposers[2],proposers[1]],'b')
+proposeeC = Proposee([proposers[1],proposers[0],proposers[2]],'c')
 proposeeC = Proposee([proposers[1],proposers[0],proposers[2]],'c')
 proposees = [proposeeA,proposeeB,proposeeC]
 
