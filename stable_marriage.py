@@ -19,5 +19,12 @@ class Proposer:
         return
   def sendRejection(proposeeName):
     self.proposeeLookUpDict[name].has_rejected = True
+
+class PotentialSpouse:
+  def __init__(self,proposee,name)
+    self.proposee = proposee
+    self.name = name
+
+
   
  
