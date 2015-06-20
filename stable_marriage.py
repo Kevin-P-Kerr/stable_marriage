@@ -14,13 +14,13 @@ class Proposer:
     self.proposeeLookUpDict = {}
     for potentialSpouse in preferences:
       self.proposeeLookUpDict[potentialSpouse.name] = potentialSpouse
-  def propose():
+  def propose(self):
     for potentialSpouse in self.preferences:
       if (not potentialSpouse.has_rejected):
         potentialSpouse.proposee.sendProposal(self)
         return
       self.loser = True # every potential spouse has rejected the proposer
-  def sendRejection(proposee):
+  def sendRejection(self,proposee):
     for potentialSpouse in preferences:
       if (proposee == potentialSpouse.proposee):
         potentialSpouse.has_rejected = True
@@ -37,10 +37,10 @@ class Proposee:
     self.preferences = preferences
     self.tentativelyAccepted = []
     self.has_been_proposed_to = False
-  def sendProposal(proposee):
+  def sendProposal(self,proposee):
     self.tenativelyAccepted.append(proposee)
     self.has_been_proposed_to = True
-  def rejectCandidates():
+  def rejectCandidates(self):
     if (not tentativelyAccepted.length):
       return
     if (not self.currentlyAccepted):
@@ -81,13 +81,16 @@ def printMarriage(proposees):
     print p.currentlyAccepted
 
 proposers = [Proposer([]),Proposer([]),Proposer([])]
+
 proposeeA = Proposee([proposers[2],proposers[1],proposers[0]])
 proposeeB = Proposee([proposers[0],proposers[2],proposers[1]])
 proposeeC = Proposee([proposers[1],proposers[0],proposers[2]])
+proposees = [proposeeA,proposeeB,proposeeC]
 
 ps = PotentialSpouse
 proposers[0].preferences = [ps(proposeeA),ps(proposeeB),ps(proposeeC)]
 proposers[1].preferences = [ps(proposeeB),ps(proposeeC),ps(proposeeA)]
 proposers[2].preferences = [ps(proposeeC),ps(proposeeA),ps(proposeeB)]
 
+doStableMarriage(proposers,proposees)
  
