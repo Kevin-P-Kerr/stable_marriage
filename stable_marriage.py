@@ -8,6 +8,7 @@ def doStableMarriage(proposers,proposees):
 
 class Proposer:
   def __init__(self, preferences):
+    self.loser = False
     self.perferences = preferences
     self.proposeeLookUpDict = {}
     for potentialSpouse in preferences:
@@ -17,6 +18,7 @@ class Proposer:
       if (!potentialSpouse.has_rejected):
         potentialSpouse.proposee.sendProposal(self)
         return
+      self.loser = True # every potential spouse has rejected the proposer
   def sendRejection(proposee):
     for potentialSpouse in preferences
       if (proposee == potentialSpouse.proposee):
@@ -33,8 +35,10 @@ class Proposee:
     self.currentlyAccepted = False
     self.perferences = perferences
     self.tentativelyAccepted = []
+    self.has_been_proposed_to = False
   def sendProposal(proposee):
     self.tenativelyAccepted.append(proposee)
+    self.has_been_proposed_to = True
   def rejectCandidates():
     if (!tentativelyAccepted.length):
       return
@@ -48,6 +52,16 @@ class Proposee:
 
 
 def unstable(proposers,proposees):
+  if (len(proposers) > len(proposees)):
+    for proposer in proposers:
+      if (!proposer.loser && !onString(proposer,proposees)):
+        return True
+    return False
+  else:
+    if (len(proposers) != numProposed(proposees)):
+      return True
+    return False
+    
   
 
 
