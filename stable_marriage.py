@@ -5,13 +5,17 @@ def doStableMarriage(proposers,proposees):
       proposer.propose()
     for proposee in proposees:
       proposee.rejectCandidates()
+    print '****'
+    printMarriage(proposees)
+    print '****'
   printMarriage(proposees)
 
 class Proposer:
-  def __init__(self, preferences):
+  def __init__(self, preferences, name):
     self.loser = False
     self.preferences = preferences
     self.proposeeLookUpDict = {}
+    self.name = name
     for potentialSpouse in preferences:
       self.proposeeLookUpDict[potentialSpouse.name] = potentialSpouse
   def propose(self):
@@ -21,7 +25,7 @@ class Proposer:
         return
       self.loser = True # every potential spouse has rejected the proposer
   def sendRejection(self,proposee):
-    for potentialSpouse in preferences:
+    for potentialSpouse in self.preferences:
       if (proposee == potentialSpouse.proposee):
         potentialSpouse.has_rejected = True
         return
@@ -32,24 +36,26 @@ class PotentialSpouse:
     self.has_rejected = False
 
 class Proposee:
-  def __init__(self,preferences):
+  def __init__(self,preferences, name):
     self.currentlyAccepted = False
     self.preferences = preferences
-    self.tentativelyAccepted = []
+    self.tenativelyAccepted = []
     self.has_been_proposed_to = False
+    self.name = name
   def sendProposal(self,proposee):
     self.tenativelyAccepted.append(proposee)
     self.has_been_proposed_to = True
   def rejectCandidates(self):
-    if (not tentativelyAccepted.length):
+    if (not len(self.tenativelyAccepted)):
       return
     if (not self.currentlyAccepted):
-      self.currentlyAccepted = tentativelyAccepted[0]
-    for proposer in tentativelyAccepted:
-      if (preferences.index(proposer) < preferences.index(self.currentlyAccepted)):
+      self.currentlyAccepted = self.tenativelyAccepted[0]
+    for proposer in self.tenativelyAccepted:
+      if (self.preferences.index(proposer) < self.preferences.index(self.currentlyAccepted)):
         self.currentlyAccepted = proposer
       else:
         proposer.sendRejection(self)
+    self.tenativelyAccepted = [] # the round is concluded
 
 
 def unstable(proposers,proposees):
@@ -65,26 +71,26 @@ def unstable(proposers,proposees):
 
 def onString(proposer, proposees):
   for proposee in proposees:
-    if (proposee.tentativelyAccepted == proposer):
+    if (proposee.tenativelyAccepted == proposer):
       return True
   return False
 
 def numProposed(proposees):
   numProposed = 0
   for p in proposees:
-    if (p.tentativelyAccepted):
+    if (p.tenativelyAccepted):
       numProposed+=1
   return numProposed
 
 def printMarriage(proposees):
   for p in proposees:
-    print p.currentlyAccepted
+    print p.name, p.currentlyAccepted.name
 
-proposers = [Proposer([]),Proposer([]),Proposer([])]
+proposers = [Proposer([],'A'),Proposer([],'B'),Proposer([],'C')]
 
-proposeeA = Proposee([proposers[2],proposers[1],proposers[0]])
-proposeeB = Proposee([proposers[0],proposers[2],proposers[1]])
-proposeeC = Proposee([proposers[1],proposers[0],proposers[2]])
+proposeeA = Proposee([proposers[2],proposers[1],proposers[0]],'a')
+proposeeB = Proposee([proposers[0],proposers[2],proposers[1]],'b')
+proposeeC = Proposee([proposers[1],proposers[0],proposers[2]],'c')
 proposees = [proposeeA,proposeeB,proposeeC]
 
 ps = PotentialSpouse
