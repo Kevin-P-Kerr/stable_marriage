@@ -8,6 +8,7 @@ def doStableMarriage(proposers,proposees):
     for proposee in proposees:
       proposee.rejectCandidates()
     print iterations
+    printMarriage(proposees)
   printMarriage(proposees)
 
 class Proposer:
@@ -16,15 +17,20 @@ class Proposer:
     self.preferences = preferences
     self.proposeeLookUpDict = {}
     self.name = name
+    self.has_been_rejected = True # maybe technically, but this has to be true in order to send proposals
     for potentialSpouse in preferences:
       self.proposeeLookUpDict[potentialSpouse.name] = potentialSpouse
   def propose(self):
+    if (not self.has_been_rejected):
+      return 
+    self.has_been_rejected = False # be hopeful!
     for potentialSpouse in self.preferences:
       if (not potentialSpouse.has_rejected):
         potentialSpouse.proposee.sendProposal(self)
         return
       self.loser = True # every potential spouse has rejected the proposer
   def sendRejection(self,proposee):
+    self.has_been_rejected = True
     for potentialSpouse in self.preferences:
       if (proposee == potentialSpouse.proposee):
         potentialSpouse.has_rejected = True
@@ -49,7 +55,7 @@ class Proposee:
     if (not len(self.tenativelyAccepted)):
       return
     if (not self.currentlyAccepted):
-      self.currentlyAccepted = self.tenativelyAccepted[0]
+      self.currentlyAccepted = self.tenativelyAccepted.pop(0)
     for proposer in self.tenativelyAccepted:
       if (self.preferences.index(proposer) < self.preferences.index(self.currentlyAccepted)):
         self.currentlyAccepted = proposer
@@ -84,7 +90,10 @@ def numProposed(proposees):
 
 def printMarriage(proposees):
   for p in proposees:
-    print p.name, p.currentlyAccepted.name
+    if (p.currentlyAccepted):
+      print p.name, p.currentlyAccepted.name
+    else:
+      print p.name, 'none accepted'
 
 # example one from paper
 #proposers = [Proposer([],'A'),Proposer([],'B'),Proposer([],'C')]
@@ -102,7 +111,7 @@ def printMarriage(proposees):
 #
 
 #example 3 from paper (should take 10 iterations)
-proposers = [Proposer([],'A'),Proposer([],'B'),Proposer([],'C'),Proposer([],'d')]
+proposers = [Proposer([],'A'),Proposer([],'B'),Proposer([],'C'),Proposer([],'D')]
 
 proposeeA = Proposee([proposers[2],proposers[3],proposers[0],proposers[1]],'a')
 proposeeB = Proposee([proposers[3],proposers[0],proposers[1],proposers[2]],'b')
