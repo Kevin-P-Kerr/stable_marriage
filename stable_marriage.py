@@ -86,18 +86,34 @@ def printMarriage(proposees):
   for p in proposees:
     print p.name, p.currentlyAccepted.name
 
-proposers = [Proposer([],'A'),Proposer([],'B'),Proposer([],'C')]
+# example one from paper
+#proposers = [Proposer([],'A'),Proposer([],'B'),Proposer([],'C')]
+#
+#proposeeA = Proposee([proposers[2],proposers[1],proposers[0]],'a')
+#proposeeB = Proposee([proposers[0],proposers[2],proposers[1]],'b')
+#proposeeC = Proposee([proposers[1],proposers[0],proposers[2]],'c')
+#proposeeC = Proposee([proposers[1],proposers[0],proposers[2]],'c')
+#proposees = [proposeeA,proposeeB,proposeeC]
+#
+#ps = PotentialSpouse
+#proposers[0].preferences = [ps(proposeeA),ps(proposeeB),ps(proposeeC)]
+#proposers[1].preferences = [ps(proposeeB),ps(proposeeC),ps(proposeeA)]
+#proposers[2].preferences = [ps(proposeeC),ps(proposeeA),ps(proposeeB)]
+#
 
-proposeeA = Proposee([proposers[2],proposers[1],proposers[0]],'a')
-proposeeB = Proposee([proposers[0],proposers[2],proposers[1]],'b')
-proposeeC = Proposee([proposers[1],proposers[0],proposers[2]],'c')
-proposeeC = Proposee([proposers[1],proposers[0],proposers[2]],'c')
-proposees = [proposeeA,proposeeB,proposeeC]
+#example 3 from paper (should take 10 iterations)
+proposers = [Proposer([],'A'),Proposer([],'B'),Proposer([],'C'),Proposer([],'d')]
+
+proposeeA = Proposee([proposers[2],proposers[3],proposers[0],proposers[1]],'a')
+proposeeB = Proposee([proposers[3],proposers[0],proposers[1],proposers[2]],'b')
+proposeeC = Proposee([proposers[0],proposers[1],proposers[2],proposers[3]],'c')
+proposeeD = Proposee([proposers[3],proposers[2],proposers[0],proposers[1]],'d')
+proposees = [proposeeA,proposeeB,proposeeC,proposeeD]
 
 ps = PotentialSpouse
-proposers[0].preferences = [ps(proposeeA),ps(proposeeB),ps(proposeeC)]
-proposers[1].preferences = [ps(proposeeB),ps(proposeeC),ps(proposeeA)]
-proposers[2].preferences = [ps(proposeeC),ps(proposeeA),ps(proposeeB)]
-
+proposers[0].preferences = [ps(proposeeA),ps(proposeeB),ps(proposeeC),ps(proposeeD)]
+proposers[1].preferences = [ps(proposeeA),ps(proposeeC),ps(proposeeC),ps(proposeeD)]
+proposers[2].preferences = [ps(proposeeB),ps(proposeeC),ps(proposeeA),ps(proposeeD)]
+proposers[2].preferences = [ps(proposeeC),ps(proposeeA),ps(proposeeB),ps(proposeeD)]
 doStableMarriage(proposers,proposees)
  
