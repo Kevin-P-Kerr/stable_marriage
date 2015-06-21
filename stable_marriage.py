@@ -8,7 +8,6 @@ def doStableMarriage(proposers,proposees):
     for proposee in proposees:
       proposee.rejectCandidates()
     print iterations
-    printMarriage(proposees)
   printMarriage(proposees)
 
 class Proposer:
@@ -26,15 +25,20 @@ class Proposer:
     self.has_been_rejected = False # be hopeful!
     for potentialSpouse in self.preferences:
       if (not potentialSpouse.has_rejected):
+        print self.name + ' is proposing to ' + potentialSpouse.proposee.name
         potentialSpouse.proposee.sendProposal(self)
         return
+      else:
+        print self.name + ' has been rejected by ' + potentialSpouse.proposee.name
       self.loser = True # every potential spouse has rejected the proposer
   def sendRejection(self,proposee):
     self.has_been_rejected = True
     for potentialSpouse in self.preferences:
       if (proposee == potentialSpouse.proposee):
+        print proposee.name + ' is rejecting ' + self.name
         potentialSpouse.has_rejected = True
         return
+    print 'bug bug couldn\'t reject!'
 
 class PotentialSpouse:
   def __init__(self,proposee):
@@ -58,6 +62,7 @@ class Proposee:
       self.currentlyAccepted = self.tenativelyAccepted.pop(0)
     for proposer in self.tenativelyAccepted:
       if (self.preferences.index(proposer) < self.preferences.index(self.currentlyAccepted)):
+        self.currentlyAccepted.sendRejection(self)
         self.currentlyAccepted = proposer
       else:
         proposer.sendRejection(self)
@@ -111,7 +116,7 @@ def printMarriage(proposees):
 #
 
 #example 3 from paper (should take 10 iterations)
-proposers = [Proposer([],'A'),Proposer([],'B'),Proposer([],'C'),Proposer([],'D')]
+proposers = [Proposer([],'alpha'),Proposer([],'beta'),Proposer([],'gamma'),Proposer([],'delta')]
 
 proposeeA = Proposee([proposers[2],proposers[3],proposers[0],proposers[1]],'a')
 proposeeB = Proposee([proposers[3],proposers[0],proposers[1],proposers[2]],'b')
@@ -121,8 +126,8 @@ proposees = [proposeeA,proposeeB,proposeeC,proposeeD]
 
 ps = PotentialSpouse
 proposers[0].preferences = [ps(proposeeA),ps(proposeeB),ps(proposeeC),ps(proposeeD)]
-proposers[1].preferences = [ps(proposeeA),ps(proposeeC),ps(proposeeC),ps(proposeeD)]
+proposers[1].preferences = [ps(proposeeD),ps(proposeeB),ps(proposeeC),ps(proposeeA)]
 proposers[2].preferences = [ps(proposeeB),ps(proposeeC),ps(proposeeA),ps(proposeeD)]
-proposers[2].preferences = [ps(proposeeC),ps(proposeeA),ps(proposeeB),ps(proposeeD)]
+proposers[3].preferences = [ps(proposeeC),ps(proposeeA),ps(proposeeB),ps(proposeeD)]
 doStableMarriage(proposers,proposees)
  
