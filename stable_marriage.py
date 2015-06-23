@@ -126,8 +126,24 @@ proposees = [proposeeA,proposeeB,proposeeC,proposeeD]
 
 ps = PotentialSpouse
 proposers[0].preferences = [ps(proposeeA),ps(proposeeB),ps(proposeeC),ps(proposeeD)]
-proposers[1].preferences = [ps(proposeeD),ps(proposeeB),ps(proposeeC),ps(proposeeA)]
+proposers[1].preferences = [ps(proposeeA),ps(proposeeB),ps(proposeeC),ps(proposeeD)]
 proposers[2].preferences = [ps(proposeeB),ps(proposeeC),ps(proposeeA),ps(proposeeD)]
 proposers[3].preferences = [ps(proposeeC),ps(proposeeA),ps(proposeeB),ps(proposeeD)]
-doStableMarriage(proposers,proposees)
+#doStableMarriage(proposers,proposees)
+
+# the parser for yodle
+class Circuit
+  def __init__(self, name, skill_vector):
+    self.skill_vector = skill_vector
+    self.name = name
+    self.implicit_preferences = []
+
+class Juggler
+  def __init__(self,name,preferences,skill_vector):
+    self.name = name
+    self.preferences = preferences
+    self.skill_vector = skill_vector
+
+    
+  
  
