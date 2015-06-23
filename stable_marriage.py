@@ -132,17 +132,50 @@ proposers[3].preferences = [ps(proposeeC),ps(proposeeA),ps(proposeeB),ps(propose
 #doStableMarriage(proposers,proposees)
 
 # the parser for yodle
-class Circuit
+class Circuit:
   def __init__(self, name, skill_vector):
     self.skill_vector = skill_vector
     self.name = name
     self.implicit_preferences = []
 
-class Juggler
+class Juggler:
   def __init__(self,name,preferences,skill_vector):
     self.name = name
     self.preferences = preferences
     self.skill_vector = skill_vector
+
+def parse_val(st):
+  return int(st.split(':')[1])
+
+def makeCircuit(line):
+  name = line[1]
+  skills = [parse_val(line[2]),parse_val(line[3]),parse_val(line[4])]
+  return Circuit(name,skills)
+
+def makeJuggler(line):
+  name = line[1]
+  skills = [parse_val(line[2]),parse_val(line[3]),parse_val(line[4])]
+  preferences = line[5].split(',')
+  return Juggler(name,preferences,skills)
+
+
+def parse(text):
+  parsed = {'jugglers':[],'circuits':[]}
+  text = text.split('\n')
+  for line in text:
+    if (len(line) < 2):
+      continue
+    line = line.split(' ')
+    if line[0] == 'C':
+      parsed['circuits'].append(makeCircuit(line))
+    elif line[0] == 'J':
+      parsed['jugglers'].append(makeJuggler(line))
+    else: contiue
+  return parsed
+
+f = open('./input.txt','r')
+x = parse(f.read())
+print x
 
     
   
