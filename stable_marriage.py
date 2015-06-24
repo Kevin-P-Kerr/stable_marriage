@@ -188,8 +188,8 @@ def parse(text):
     else: contiue
   return parsed
 
-#f = open('./input.txt','r')
-f = open('./testinput.txt','r')
+f = open('./input.txt','r')
+#f = open('./testinput.txt','r')
 problem_data = parse(f.read())
 # now solve the problem
 # first create the proposees
