@@ -9,7 +9,6 @@ def doStableMarriage(proposers,proposees):
       proposer.propose()
     for proposee in proposees:
       proposee.rejectCandidates()
-    print iterations
   printMarriage(proposees)
 
 class Proposer:
@@ -45,6 +44,8 @@ class Proposer:
 class PotentialSpouse:
   def __init__(self,proposee):
     self.proposee = proposee
+    if hasattr(proposee,'name'):
+        self.name = proposee.name
     self.has_rejected = False
 
 def acceptedSortMaker(preferences):
@@ -67,8 +68,9 @@ class Proposee:
   def rejectCandidates(self):
     if (not len(self.tenativelyAccepted)):
       return
-    if (len(self.currentlyAccepted) == 0):
+    if (len(self.currentlyAccepted) < self.limit):
       self.currentlyAccepted.append(self.tenativelyAccepted.pop(0))
+      return
     for proposer in self.tenativelyAccepted:
       weakestAccepted = self.currentlyAccepted[len(self.currentlyAccepted)-1]
       if (self.preferences.index(proposer) < self.preferences.index(weakestAccepted)):
@@ -186,7 +188,8 @@ def parse(text):
     else: contiue
   return parsed
 
-f = open('./input.txt','r')
+#f = open('./input.txt','r')
+f = open('./testinput.txt','r')
 problem_data = parse(f.read())
 # now solve the problem
 # first create the proposees
@@ -208,18 +211,29 @@ for proposee in problem_data['circuits']:
 
 for proposer in problem_data['jugglers']:
   preferences = []
-  for proposerName in  proposer.preferences:
-    preferences.append(proposees[proposerName])
+  for proposeeName in  proposer.preferences:
+    proposee = proposees[proposeeName]
+    preferences.append(PotentialSpouse(proposee))
   proposers[proposer.name] = Proposer(preferences,proposer.name)
   proposers[proposer.name].juggler = proposer
   proposerArr.append(proposers[proposer.name])
 
 # set the proposee preferenes
+counter = 0
+print len(proposeeArr)
+print len(proposerArr)
 for proposee in proposeeArr:
+  counter += 1
   preferences = []
-  proposee_skill_vector = proposee.circuit,skill_vector
+  proposee_skill_vector = proposee.circuit.skill_vector
   for proposer in proposerArr:
     proposer_skill_vector = proposer.juggler.skill_vector
     dp = dot(proposee_skill_vector,proposer_skill_vector)
     preferences.append({'dp':dp,'proposer':proposer})
-  
+  preferences = sorted(preferences,key=lambda p: p['dp'],reverse=True)
+  true_preferences = []
+  for p in preferences:
+      true_preferences.append(p['proposer'])
+  proposee.preferences = true_preferences
+  proposee.acceptedSort = acceptedSortMaker(true_preferences)
+doStableMarriage(proposerArr,proposeeArr)
