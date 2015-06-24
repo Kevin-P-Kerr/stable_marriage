@@ -1,3 +1,5 @@
+import numpy
+dot = numpy.dot
 # definitions
 def doStableMarriage(proposers,proposees):
   iterations = 0
@@ -197,13 +199,27 @@ circPerJug = numJug/numCirc
 
 proposees = {}
 proposers = {}
+proposeeArr = []
+proposerArr = []
 for proposee in problem_data['circuits']:
   proposees[proposee.name] = Proposee({},proposee.name,circPerJug)
+  proposees[proposee.name].circuit = proposee
+  proposeeArr.append(proposees[proposee.name])
 
 for proposer in problem_data['jugglers']:
   preferences = []
   for proposerName in  proposer.preferences:
     preferences.append(proposees[proposerName])
-    print proposees[proposerName].name
-    proposers[proposer.name] = Proposer(preferences,proposer.name)
+  proposers[proposer.name] = Proposer(preferences,proposer.name)
+  proposers[proposer.name].juggler = proposer
+  proposerArr.append(proposers[proposer.name])
 
+# set the proposee preferenes
+for proposee in proposeeArr:
+  preferences = []
+  proposee_skill_vector = proposee.circuit,skill_vector
+  for proposer in proposerArr:
+    proposer_skill_vector = proposer.juggler.skill_vector
+    dp = dot(proposee_skill_vector,proposer_skill_vector)
+    preferences.append({'dp':dp,'proposer':proposer})
+  
