@@ -45,25 +45,35 @@ class PotentialSpouse:
     self.proposee = proposee
     self.has_rejected = False
 
+def acceptedSortMaker(preferences):
+  def acceptedSort(p1,p2):
+    return preferences.index(p1) < preferences.index(p2)
+  return acceptedSort
+
 class Proposee:
-  def __init__(self,preferences, name):
-    self.currentlyAccepted = False
+  def __init__(self,preferences, name, limit=1):
+    self.currentlyAccepted = []
     self.preferences = preferences
     self.tenativelyAccepted = []
     self.has_been_proposed_to = False
     self.name = name
+    self.limit = limit
+    self.acceptedSort = acceptedSortMaker(preferences)
   def sendProposal(self,proposee):
     self.tenativelyAccepted.append(proposee)
     self.has_been_proposed_to = True
   def rejectCandidates(self):
     if (not len(self.tenativelyAccepted)):
       return
-    if (not self.currentlyAccepted):
-      self.currentlyAccepted = self.tenativelyAccepted.pop(0)
+    if (len(self.currentlyAccepted) == 0):
+      self.currentlyAccepted.append(self.tenativelyAccepted.pop(0))
     for proposer in self.tenativelyAccepted:
-      if (self.preferences.index(proposer) < self.preferences.index(self.currentlyAccepted)):
-        self.currentlyAccepted.sendRejection(self)
-        self.currentlyAccepted = proposer
+      weakestAccepted = self.currentlyAccepted[len(self.currentlyAccepted)-1]
+      if (self.preferences.index(proposer) < self.preferences.index(weakestAccepted)):
+        weakestAccepted.sendRejection(self)
+        self.currentlyAccepted.pop()
+        self.currentlyAccepted.append(proposer)
+        self.currentlyAccepted = sorted(self.currentlyAccepted, cmp=self.acceptedSort)
       else:
         proposer.sendRejection(self)
     self.tenativelyAccepted = [] # the round is concluded
@@ -96,7 +106,8 @@ def numProposed(proposees):
 def printMarriage(proposees):
   for p in proposees:
     if (p.currentlyAccepted):
-      print p.name, p.currentlyAccepted.name
+      for pp in p.currentlyAccepted:
+        print p.name, pp.name
     else:
       print p.name, 'none accepted'
 
@@ -129,7 +140,7 @@ proposers[0].preferences = [ps(proposeeA),ps(proposeeB),ps(proposeeC),ps(propose
 proposers[1].preferences = [ps(proposeeA),ps(proposeeB),ps(proposeeC),ps(proposeeD)]
 proposers[2].preferences = [ps(proposeeB),ps(proposeeC),ps(proposeeA),ps(proposeeD)]
 proposers[3].preferences = [ps(proposeeC),ps(proposeeA),ps(proposeeB),ps(proposeeD)]
-#doStableMarriage(proposers,proposees)
+doStableMarriage(proposers,proposees)
 
 # the parser for yodle
 class Circuit:
@@ -174,8 +185,12 @@ def parse(text):
   return parsed
 
 f = open('./input.txt','r')
-x = parse(f.read())
-print x
+problem_data = parse(f.read())
+# now solve the problem
+# first create the proposees
+# then the proposers
+# then the problem is solved
+
 
     
   
