@@ -1,0 +1,35 @@
+3
+12
+J0 is proposing to C2
+J1 is proposing to C0
+J2 is proposing to C0
+J3 is proposing to C2
+J4 is proposing to C0
+J5 is proposing to C0
+J6 is proposing to C2
+J7 is proposing to C2
+J8 is proposing to C1
+J9 is proposing to C1
+J10 is proposing to C0
+J11 is proposing to C0
+C0 is rejecting J10
+C0 is rejecting J11
+J10 has been rejected by C0
+J10 is proposing to C2
+J11 has been rejected by C0
+J11 is proposing to C1
+C2 is rejecting J7
+J7 has been rejected by C2
+J7 is proposing to C1
+C0 J1
+C0 J2
+C0 J4
+C0 J5
+C1 J8
+C1 J9
+C1 J11
+C1 J7
+C2 J0
+C2 J3
+C2 J6
+C2 J10
