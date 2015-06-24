@@ -140,7 +140,7 @@ proposers[0].preferences = [ps(proposeeA),ps(proposeeB),ps(proposeeC),ps(propose
 proposers[1].preferences = [ps(proposeeA),ps(proposeeB),ps(proposeeC),ps(proposeeD)]
 proposers[2].preferences = [ps(proposeeB),ps(proposeeC),ps(proposeeA),ps(proposeeD)]
 proposers[3].preferences = [ps(proposeeC),ps(proposeeA),ps(proposeeB),ps(proposeeD)]
-doStableMarriage(proposers,proposees)
+#doStableMarriage(proposers,proposees)
 
 # the parser for yodle
 class Circuit:
@@ -191,7 +191,19 @@ problem_data = parse(f.read())
 # then the proposers
 # then the problem is solved
 
+numJug  = len(problem_data['jugglers']) 
+numCirc = len(problem_data['circuits'])
+circPerJug = numJug/numCirc
 
-    
-  
- 
+proposees = {}
+proposers = {}
+for proposee in problem_data['circuits']:
+  proposees[proposee.name] = Proposee({},proposee.name,circPerJug)
+
+for proposer in problem_data['jugglers']:
+  preferences = []
+  for proposerName in  proposer.preferences:
+    preferences.append(proposees[proposerName])
+    print proposees[proposerName].name
+    proposers[proposer.name] = Proposer(preferences,proposer.name)
+
