@@ -96,7 +96,7 @@ def unstable(proposers,proposees):
 
 def onString(proposer, proposees):
   for proposee in proposees:
-    if (proposee.tenativelyAccepted == proposer):
+    if (proposer in proposee.currentlyAccepted):
       return True
   return False
 
